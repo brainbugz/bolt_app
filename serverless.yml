@@ -1,0 +1,27 @@
+service: rotation-lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  conversions:
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: "arn:aws:dynamodb:us-east-2:597851637428:table/slack_apps"
+    handler: lambda_entrypoint.handler
+    url: true
+    environment:
+      SLACK_BOT_TOKEN: ${env:SLACK_BOT_TOKEN}
+      SLACK_SIGNING_SECRET: ${env:SLACK_SIGNING_SECRET}
+
+plugins:
+  - serverless-python-requirements
+  - serverless-iam-roles-per-function
+
+
+
